@@ -1,0 +1,44 @@
+[
+  {
+    "sensor_id": 1045,
+    "location_id": 25,
+    "location_name": "Parque O'Higgins",
+    "parameter_name": "co",
+    "parameter_units": "\u00b5g/m\u00b3"
+  },
+  {
+    "sensor_id": 1046,
+    "location_id": 25,
+    "location_name": "Parque O'Higgins",
+    "parameter_name": "no2",
+    "parameter_units": "\u00b5g/m\u00b3"
+  },
+  {
+    "sensor_id": 114,
+    "location_id": 25,
+    "location_name": "Parque O'Higgins",
+    "parameter_name": "o3",
+    "parameter_units": "\u00b5g/m\u00b3"
+  },
+  {
+    "sensor_id": 1047,
+    "location_id": 25,
+    "location_name": "Parque O'Higgins",
+    "parameter_name": "pm10",
+    "parameter_units": "\u00b5g/m\u00b3"
+  },
+  {
+    "sensor_id": 1044,
+    "location_id": 25,
+    "location_name": "Parque O'Higgins",
+    "parameter_name": "pm25",
+    "parameter_units": "\u00b5g/m\u00b3"
+  },
+  {
+    "sensor_id": 44,
+    "location_id": 25,
+    "location_name": "Parque O'Higgins",
+    "parameter_name": "so2",
+    "parameter_units": "\u00b5g/m\u00b3"
+  }
+]

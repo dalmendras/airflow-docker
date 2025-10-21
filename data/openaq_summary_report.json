@@ -1,0 +1,12 @@
+{
+  "execution_time": "2025-10-21T01:23:31.610776",
+  "total_countries": 140,
+  "regional_distribution": {
+    "Am\u00e9rica/Otros": 105,
+    "Europa/\u00c1frica": 19,
+    "Asia": 8,
+    "Ocean\u00eda": 7
+  },
+  "data_source": "OpenAQ API v3",
+  "api_endpoint": "https://api.openaq.org/v3/countries"
+}

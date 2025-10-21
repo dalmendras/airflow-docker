@@ -39,8 +39,7 @@
 version: '3'
 x-airflow-common:
   &airflow-common
-  build: .
-  image: ${AIRFLOW_IMAGE_NAME:-extending_airflow:latest}
+  image: extending_airflow:latest
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
@@ -49,10 +48,17 @@ x-airflow-common:
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: 10
+    # PostgreSQL connection for OpenAQ data
+    POSTGRES_HOST: postgres
+    POSTGRES_PORT: 5432
+    POSTGRES_DB: openaq_data
+    POSTGRES_USER: openaq_user
+    POSTGRES_PASSWORD: openaq_password
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
+    - ./data:/opt/airflow/data
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
     postgres:
@@ -62,13 +68,14 @@ services:
   postgres:
     image: postgres:13
     environment:
+      POSTGRES_DB: airflow
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
+      - ./init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql
     ports:
-      - 5432:5432
+      - "5432:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
@@ -86,15 +93,21 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
 
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
     restart: always
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
 
   airflow-init:
     <<: *airflow-common
-    command: version
+    command: bash -c "airflow db upgrade && airflow users create --username airflow --firstname airflow --lastname airflow --role Admin --email airflow@example.com --password airflow"
     environment:
       <<: *airflow-common-env
       _AIRFLOW_DB_UPGRADE: 'true'
@@ -104,3 +117,5 @@ services:
 
 volumes:
   postgres-db-volume:
+
+
